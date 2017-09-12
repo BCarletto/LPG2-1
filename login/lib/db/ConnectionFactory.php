@@ -1,6 +1,7 @@
 <?php
 
 namespace App\db;
+use \PDO;
 
 class ConnectionFactory {
 
@@ -11,8 +12,9 @@ class ConnectionFactory {
     public $con;
 
     public function __construct (){
-        $con = new PDO("mysql:host=localhost;db=login", $user, $password);
+        $con = new PDO("mysql:$this->host=localhost;$this->db=login", $this->$user, $this->$password);
     }
 
+    
 
 }
