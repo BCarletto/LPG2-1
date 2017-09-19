@@ -9,12 +9,16 @@ class ConnectionFactory {
     private $db = "login";
     private $user = "root";
     private $password = "D3v3l0pm3nt";
-    public $con;
+    public $conn;
 
-    public function __construct (){
-        $con = new PDO("mysql:$this->host=localhost;$this->db=login", $this->$user, $this->$password);
+    public function __construct() {
+        try {
+            $this->conn = new PDO("mysql:host=$this->host;dbname=$this->db", 
+                            $this->user, 
+                            $this->password);
+        } catch( PDOException $e ) {
+            throw new Exception($e->getMessage() , $e->getCode());
+        }
     }
-
-    
 
 }
