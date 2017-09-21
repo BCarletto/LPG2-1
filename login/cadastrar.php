@@ -3,22 +3,24 @@
 
     use App\utils\Encryptor as Encryptor;
     use App\dao\AccountDAO as AccountDAO;
+    use App\entities\account as account;
 
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $cidade = $_POST['cidade'];
 
-    $encrypted_password = Encryptor::encrypt($password);
-    
-    $dados = array('email' => $email, 'encrypted_password' =>$encrypted_password);
+    $acc = new account();
+    $acc->setEmail($email);
+    $acc->setPassword($password);
+    $acc->setCidade($cidade);
 
     $adao = new AccountDAO();
-
-
-    if($cf->emailExist($email)) {
+    
+    if($adao->emailExist($email)) {
         $_SESSION['error'] = "E-mail já cadastrado.";
         header("Location: cadastro.php");
     } else {
-        $adao->insertAccount($dados);;
+        $adao->insertAccount($acc);
         $_SESSION['msg'] = "Usuário cadastrado com sucesso.";
         header('Location: index.php');
     }

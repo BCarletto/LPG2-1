@@ -1,22 +1,18 @@
 <?php
     require('start.php');
-    require("lib/Encryptor.php");
-    require("lib/ConnectionFactory.php");
-    
-    use App\entities\Account as Account;
+
+    use App\entities\account as account;
     use App\dao\AccountDAO as AccountDAO;
     
-
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $acc = new Account();
-    $acc -> setEmail($email);
-    $acc -> setpassword($password);
+    $acc = new account();
+    $acc->setEmail($email);
+    $acc->setPassword($password);
 
     $adao = new AccountDAO();
-    
-    $validated = $adao->verifyData($email, $encrypted_password);
+    $validated = $adao->verifyData($acc);
 
     if($validated) {
         $_SESSION['signed_in'] = true;
