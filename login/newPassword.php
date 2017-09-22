@@ -3,6 +3,12 @@
     require('partials/_signed_in.php');
 
     use App\utils\Alert as Alert;
+
+    if (!isset($_SESSION['recoverEmail'])) {
+        $_SESSION['error'] = "Ação não autorizada.";
+        header('Location: index.php');
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>

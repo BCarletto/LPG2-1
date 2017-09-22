@@ -1,17 +1,31 @@
 <?php
-
-require('start.php');
+    require('start.php');
 
     use App\dao\AccountDAO as AccountDAO;
-    use App\entities\account as account;
+    use App\entities\Account as Account;
 
-    $password = $_POST['password'];
+    $email = $_SESSION['recoverEmail'];
+    $pass1 = $_POST['novaSenha'];
+    $pass2 = $_POST['confirmarSenha'];
+    
+    if ($pass1 != $pass2) {
 
-    $acc = new account();
-    $acc->getPassword($password);
-
+        $_SESSION['error'] = "Senhas não confererem, digite novamente.";
+        header("Location: nova_senha.php");
+    }
+    
+    $acc = new Account();
+    $acc->setEmail($email);
+    $acc->setPassword($pass1);
     $adao = new AccountDAO();
-
-    $adao -> alterarPassword($account);
-
-    header("Location: login.php");
+    
+    if($adao->updatePassword($acc)) {
+        unset($_SESSION['recoverEmail']);
+        $_SESSION['msg'] = "Senha atualizada com sucesso.";
+        header("Location: index.php");
+    } else {
+        $_SESSION['error'] = "Houve um erro ao atualizar o e-mail e a senha.";
+        header('Location: nova_senha.php');
+    }
+    
+?>

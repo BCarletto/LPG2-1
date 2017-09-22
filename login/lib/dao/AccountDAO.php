@@ -59,15 +59,16 @@ class AccountDAO {
         return $stmt->fetch(PDO::FETCH_OBJ);        
     }
 
-    public function alterarPassword($account){
+    public function updatePassword($account){
         $cf = new ConnectionFactory();
 
         $stmt = $cf->conn->prepare('UPDATE account 
-                                    SET password = newPassword
-                                    WHERE password = :ep');
+                                    SET password = :ep
+                                    WHERE email = :email');
 
         $status = $stmt->execute(array(
-        ':ep' => $account->getNewPassword()
+        ':email' => $account->getEmail(),
+        ':ep' => $account->setPassword()
         ));
 
     }

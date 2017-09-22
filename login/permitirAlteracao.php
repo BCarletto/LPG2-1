@@ -8,15 +8,16 @@
     $cidade = $_POST['cidade'];
 
     $acc = new account();
-    $acc->getEmail($email);
-    $acc->getCidade($cidade);
+    $acc->setEmail($email);
+    $acc->setCidade($cidade);
 
     $adao = new AccountDAO();
     
     if($adao->verificaAlteracao($account)) {
+        $_SESSION['recoverEmail'] = $email;
        header ("Location: newPassword");
     } else {
-        $_SESSION['error'] = "E-mail já cadastrado.";
+        $_SESSION['error'] = "E-mail ou cidade incorretos.";
         header("Location: login.php");
     }
     

@@ -34,14 +34,7 @@ class account {
     }
 
     public function setCidade($cidade) {
-        $this->cidade = $cidade;
+        $this->cidade = strtolower($cidade);
     }
 
-    public function getNewPassword() {
-        return $this->newPassword;
-    }
-
-    public function setNewPassword($newPassword) {
-        $this->newPassword = Encryptor::encrypt($newPassword);
-    }
 }
