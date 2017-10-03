@@ -1,32 +1,39 @@
 <?php
 
-require ('start.php');
+namespace App\entities;
 
-    
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+use App\utils\Encryptor as Encryptor;
 
-    $encrypted_password = Encryptor::encrypt($password);
+class Account {
 
-    class Account{
-        
-    public function getEmail(){
+    private $email;
+    private $password;
+    private $cidade;
+
+
+    public function getEmail() {
         return $this->email;
     }
 
-    public function setEmail(){
+    public function setEmail($email) {
         $this->email = $email;
-        return $this;
     }
 
-    public function getPassword(){
+
+    public function getPassword() {
         return $this->password;
     }
 
-    public function setPassword(){
-        $this->password = $password;
-        return $this;
+    public function setPassword($password) {
+        $this->password = Encryptor::encrypt($password);
     }
+
+    public function setCidade($cidade) {
+        $this->cidade = strtolower($cidade);
+    }
+
+    public function getCidade() {
+        return $this->cidade;
+    }
+
 }
-
-

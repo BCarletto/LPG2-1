@@ -9,10 +9,10 @@ class AccountDAO {
     public function insertAccount($account) {
         $cf = new ConnectionFactory();
 
-        $stmt = $cf->conn->prepare('INSERT INTO account (email, password, cidade)
+        $stmt = $cf->conn->prepare('INSERT INTO accounts (email, password, cidade)
                                     VALUES(:email, :ep, :cidade)');
         $status = $stmt->execute(array(
-            ':email' => $account->getEmail(), 
+            ':email' => $account->getEmail(),
             ':ep' => $account->getPassword(),
             ':cidade' => $account->getCidade()
         ));
@@ -23,32 +23,21 @@ class AccountDAO {
     public function verifyData($account) {
         $cf = new ConnectionFactory();
 
-        $stmt = $cf->conn->prepare('SELECT * FROM account 
-                                    WHERE email = :email AND password = :ep');
+        $stmt = $cf->conn->prepare('SELECT * FROM accounts 
+                                    WHERE email = :email AND password = :password');
         
         $status = $stmt->execute(array(
             ':email' => $account->getEmail(),
-            ':ep' => $account->getPassword()
+            ':password' => $account->getPassword()
         ));
         
         return $stmt->fetch(PDO::FETCH_OBJ);        
     }
 
-    public function emailExist($email) {
+    public function verifyRecover($account) {
         $cf = new ConnectionFactory();
 
-        $stmt = $cf->conn->prepare('SELECT * FROM account WHERE email = :email');
-        $stmt->execute(array(
-            ':email' => $email
-        ));
-        
-        return $stmt->fetch(PDO::FETCH_OBJ);        
-    }
-
-    public function verificaAlteracao($account){
-        $cf = new ConnectionFactory();
-
-        $stmt = $cf->conn->prepare('SELECT * FROM account 
+        $stmt = $cf->conn->prepare('SELECT * FROM accounts 
                                     WHERE email = :email AND cidade = :cidade');
         
         $status = $stmt->execute(array(
@@ -56,20 +45,32 @@ class AccountDAO {
             ':cidade' => $account->getCidade()
         ));
         
+        return $stmt->fetch(PDO::FETCH_OBJ);       
+    }
+
+
+    public function emailExist($email) {
+        $cf = new ConnectionFactory();
+
+        $stmt = $cf->conn->prepare('SELECT * FROM accounts WHERE email = :email');
+        $stmt->execute(array(
+            ':email' => $email
+        ));
+        
         return $stmt->fetch(PDO::FETCH_OBJ);        
     }
 
-    public function updatePassword($account){
+    public function updatePassword($account) {
         $cf = new ConnectionFactory();
 
-        $stmt = $cf->conn->prepare('UPDATE account 
-                                    SET password = :ep
+        $stmt = $cf->conn->prepare('UPDATE accounts set password = :password
                                     WHERE email = :email');
-
         $status = $stmt->execute(array(
-        ':email' => $account->getEmail(),
-        ':ep' => $account->setPassword()
+            ':email' => $account->getEmail(),
+            ':password' => $account->getPassword()
         ));
-
+        
+        return $status;        
     }
+
 }
